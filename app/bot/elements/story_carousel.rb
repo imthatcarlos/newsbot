@@ -1,31 +1,19 @@
 module Elements
   class StoryCarousel
-    attr_reader :type, 
-                :query,
-                :stories
+    attr_reader :source
 
-    def initialize(type, query = nil)
-      @type  = type
-      @query = query
+    def initialize(source_id)
+      @source = Source.find(source_id).api_id
     end
 
     def elements
-      set_stories
-      @stories.map { |story| Elements::StoryElement.new(story.id).element }
+      stories.map { |story| Elements::StoryElement.new(story).element }
     end
 
     private
 
-    def set_stories
-      case type
-      when "top"
-        @stories = Story.top_today
-      when "for_you"
-        @stories = user.preferred_stories
-      else # search
-        @stories = Story.today.search(@query)
-      end
+    def stories
+      NewsAPI::Client.new(source).top_headlines.select { |s| s["description"].present? }
     end
-
   end
 end

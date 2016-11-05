@@ -15,6 +15,7 @@ gem "redis",                            "3.3.0"
 gem "sidekiq",                          "4.1.1"
 gem "facebook-messenger"
 gem "faraday"
+gem "will_paginate"
 
 group :development, :test do
   gem "byebug"

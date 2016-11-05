@@ -2,13 +2,17 @@ module Elements
   class StoryElement
     attr_reader :story, :user_id
 
-    def initialize(story_id, user_id)
-      @story    = Story.find(story_id)
-      @user_id  =  user_id 
+    def initialize(story)
+      @story = Story.new(
+        title:     story["title"],
+        subtitle:  story["description"],
+        image_url: story["urlToImage"],
+        url:       story["url"]
+      )
     end
 
     def element
-      if summary.present?
+      if story.summary.present?
         with_summary
       else
         without_summary
@@ -26,7 +30,7 @@ module Elements
           {
             type:  "web_url",
             url:   story.url,
-            title: "Read Full Article",
+            title: "Read Article",
             webview_height_ratio: "full"
           },
           {
@@ -35,9 +39,7 @@ module Elements
             payload: "get_summary=#{@story.id}"
           },
           {
-            type:    "postback",
-            title:   "Ask NewsBot",
-            payload: "ask"
+            type: "element_share"
           }
         ]
       }
@@ -52,18 +54,11 @@ module Elements
           {
             type:  "web_url",
             url:   story.url,
-            title: "Read Full Article",
+            title: "Read Article",
             webview_height_ratio: "full"
           },
           {
-            type:    "postback",
-            title:   "Stories For You",
-            payload: "for_you"
-          },
-          {
-            type:    "postback",
-            title:   "Ask NewsBot",
-            payload: "ask"
+            type: "element_share"
           }
         ]
       }

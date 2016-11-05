@@ -29,15 +29,19 @@ class Brain
     Facebook::Client.new.set_typing_on(sender["id"])
   end
 
+  def stop_typing
+    Facebook::Client.new.set_typing_off(sender["id"])
+  end
+
   def process_message
-    if text.present?
+    if message.messaging["message"]["quick_reply"].present?
+      @postback = OpenStruct.new({ payload: message.messaging["message"]["quick_reply"]["payload"] })
+      process_postback
+    elsif text.present?
       process_text
     else
-      send_text("Pick an option below to get going")
-      send_buttons(Elements::MenuElement.new(user.id).payload)
+      send_text("I can't reply :(")
     end
-
-    stop_typing
   end
 
   def process_postback
@@ -50,11 +54,13 @@ class Brain
       when "generic"
         send_generic_template(r[:elements])
       when "buttons"
-        send_buttons[r[:payload]]
+        send_buttons(r[:payload])
+      when "quick_replies"
+        send_quick_replies(r[:text], r[:replies])
+      else
+        fail "invalid type"
       end
     end
-
-    stop_typing
   end
 
   def create_log
@@ -76,13 +82,12 @@ class Brain
 
   private
 
-  # they either sent us one or 2 key words, or garbage.
   def process_text
-    if text.split(" ").count > 2
-      send_buttons(Elements::MenuElement.new.element)
+    if user.context.state == "subscribing"
+      @postback = OpenStruct.new({ payload: text })
+      return process_postback
     else
-      elements = Elements::StoryCarousel.new("search", text).elements
-      send_generic_template(elements)
+      send_text("Well, hello to you too ;)")
     end
   end
 
@@ -122,6 +127,16 @@ class Brain
     )
   end
 
+  def send_quick_replies(text, replies)
+    Bot.deliver(
+      recipient: sender,
+      message: {
+        text: text,
+        quick_replies: replies
+      }
+    )
+  end
+
   def send_error
     Bot.deliver(
       recipient: sender,
@@ -129,10 +144,6 @@ class Brain
         text: "Sorry, didn't understand that."
       }
     )
-  end
-
-  def stop_typing
-    Facebook::Client.new.set_typing_off(sender["id"])
   end
 
   def message_type

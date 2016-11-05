@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161018040739) do
+ActiveRecord::Schema.define(version: 20161027024605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contexts", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "state"
+    t.string   "param"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "logs", force: :cascade do |t|
     t.integer  "user_id"
@@ -22,6 +30,15 @@ ActiveRecord::Schema.define(version: 20161018040739) do
     t.datetime "sent_at"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+  end
+
+  create_table "sources", force: :cascade do |t|
+    t.string   "name"
+    t.string   "api_id"
+    t.string   "image_url"
+    t.boolean  "active",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "stories", force: :cascade do |t|
@@ -37,17 +54,24 @@ ActiveRecord::Schema.define(version: 20161018040739) do
     t.datetime "updated_at",     null: false
   end
 
+  create_table "story_subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "source_id"
+    t.integer  "ranking",             default: 1
+    t.time     "scheduled_time"
+    t.string   "scheduled_frequency"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "fb_id"
     t.string   "full_name"
     t.string   "gender"
     t.string   "locale"
     t.integer  "timezone"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "story_preference1"
-    t.string   "story_preference2"
-    t.string   "story_preference3"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
