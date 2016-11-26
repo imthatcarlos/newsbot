@@ -6,8 +6,4 @@ class StorySubscription < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :source
-
-  def schedule
-    "#{scheduled_time.strftime("at %I:%M%p")}"
-  end
 end

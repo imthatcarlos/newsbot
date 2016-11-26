@@ -80,6 +80,14 @@ class Brain
     end
   end
 
+  def send_subscription_stories(user_id, source_id)
+    elements = Elements::StoryCarousel.new(source_id).elements
+    @sender = { id: User.find(user_id).fb_id }
+
+    send_text("Here are today's top stories for #{Source.find(source_id).name}.")
+    send_generic_template(elements)
+  end
+
   private
 
   def process_text
@@ -169,10 +177,5 @@ class Brain
     end
 
     @user
-  end
-
-  # 
-  def set_get_started_btn
-    #curl -X POST -H "Content-Type: application/json" -d '{"setting_type": "call_to_actions", "thread_state": "new_thread", "call_to_actions": [{"payload": "Hey there! We are a coffee shop." }] }' "https://graph.facebook.com/v2.6/me/thread_settings?access_token=EAAIhGQtDHJ8BALjzLfTbXGZCdN8FKry6ORX4QZB9DG3ZADMOJHyYOMJQcvNMPQFEiqFVFrHKKCDWATpe4ZChFZCpBYJuVoZAiRs4r597zdGLeLQeBDkbkdQImcJPqOHfeIl40cbOG0q56Kjq7unBY0lUT8vqFYvXF1WaOXR3zqKAZDZD"
   end
 end

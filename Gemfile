@@ -16,6 +16,7 @@ gem "sidekiq",                          "4.1.1"
 gem "facebook-messenger"
 gem "faraday"
 gem "will_paginate"
+gem "clockwork"
 
 group :development, :test do
   gem "byebug"

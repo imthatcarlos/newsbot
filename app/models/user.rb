@@ -15,8 +15,4 @@ class User < ActiveRecord::Base
   def context
     contexts.last
   end
-
-  # Some algorithm to determine which stories this user would like
-  def preferred_stories
-  end
 end

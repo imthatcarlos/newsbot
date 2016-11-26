@@ -155,11 +155,11 @@ class Postback
   end
 
   def unsubscribe(source_id)
-    StorySubscription.where(user_id: user.id, source_id: source_id).delete
+    StorySubscription.where("user_id = ? AND source_id = ?", user.id, source_id).first.delete
     items = [
       {
         type: "text",
-        text: "Done."
+        text: "You've unsubscribed from #{Source.find(source_id).name}."
       }
     ]
 
