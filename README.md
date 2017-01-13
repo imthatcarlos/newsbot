@@ -16,7 +16,7 @@ bundle exec rake db:create db:migrate db:seed
 ## Configure
 
 ```
-You'll have to create a Facebook page and app. See [article](http://bit.ly/2jBRPYO).
+You'll have to create a Facebook page and app. See <a href="http://bit.ly/2jBRPYO">article</a>.
 ```
 
 Now you can message your bot.
