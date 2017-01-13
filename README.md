@@ -11,12 +11,12 @@ bundle install
 bundle exec rake db:create db:migrate db:seed
 ```
 
-* Seeding is important becuase it creates sources that correspond to NewsAPI publications.
+* Seeding is important because it creates sources that correspond to NewsAPI publications.
 
 ## Configure
 
 ```
-You'll have to have Facebook page and app set up. See article: http://bit.ly/2fwWFrU
+You'll have to create a Facebook page and app. See article: http://bit.ly/2fwWFrU
 ```
 
 Now you can message your bot.
