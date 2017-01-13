@@ -1,24 +1,22 @@
-# README
+# NewsBot
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A News Digest Bot For Facebook Messenger
 
-Things you may want to cover:
+## Install
 
-* Ruby version
+```
+git clone git@github.com:imthatcarlos/newsbot.git
+cd newsbot
+bundle install
+bundle exec rake db:create db:migrate db:seed
+```
 
-* System dependencies
+* Seeding is important becuase it creates sources that correspond to NewsAPI publications.
 
-* Configuration
+## Configure
 
-* Database creation
+```
+You'll have to have Facebook page and app set up. See article: http://bit.ly/2fwWFrU
+```
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Now you can message your bot.
